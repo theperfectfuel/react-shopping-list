@@ -50,48 +50,45 @@
 
 	var ReactDOM = __webpack_require__(32);
 
+	var storesObj = {
+		stores: [{ storeName: "Trader Joes", items: ["Coffee", "Beer", "Beef Jerky"] }, { storeName: "Sprouts", items: ["Lettuce", "Nuts", "Cilantro"] }, { storeName: "Albertsons", items: ["Milk", "Meat"] }]
+	};
+
 	var Board = React.createClass({
 		displayName: 'Board',
 
 
 		render: function render() {
-
+			var stores = [];
+			for (var i = 0; i < 3; i++) {
+				stores.push(React.createElement(Store, { storeName: storesObj.stores[i].storeName, items: storesObj.stores[i].items }));
+				//console.log(storesObj.stores[0].items);
+			}
 			return React.createElement(
 				'div',
 				{ className: 'board' },
-				React.createElement(Store, null)
+				stores
 			);
 		}
-
 	});
 
-	var Store = function Store() {
-		var storeName = "Trader Joes";
-		var storeName2 = "Sprouts";
-		var storeName3 = "Albertsons";
+	var Store = function Store(props) {
+		console.log(props.items);
+
+		var items = [];
+		for (var i = 0; i < props.items.length; i++) {
+
+			items.push(React.createElement(Item, { itemName: props.items[i] }));
+		}
+
 		return React.createElement(
 			'div',
 			null,
 			React.createElement(
 				'div',
 				{ className: 'store' },
-				storeName,
-				React.createElement(Item, { itemName: 'Coffee' }),
-				React.createElement(Item, { itemName: 'Beer' })
-			),
-			React.createElement(
-				'div',
-				{ className: 'store' },
-				storeName2,
-				React.createElement(Item, { itemName: 'Nuts' }),
-				React.createElement(Item, { itemName: 'Fruit' })
-			),
-			React.createElement(
-				'div',
-				{ className: 'store' },
-				storeName3,
-				React.createElement(Item, { itemName: 'Meat' }),
-				React.createElement(Item, { itemName: 'Eggs' })
+				props.storeName,
+				items
 			)
 		);
 	};
