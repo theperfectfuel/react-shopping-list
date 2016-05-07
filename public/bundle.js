@@ -46,85 +46,175 @@
 
 	'use strict';
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 	var React = __webpack_require__(1);
 
 	var ReactDOM = __webpack_require__(32);
 
 	var storesObj = {
-		stores: [{ storeName: "Trader Joes", items: ["Coffee", "Beer", "Beef Jerky"] }, { storeName: "Sprouts", items: ["Lettuce", "Nuts", "Cilantro"] }, { storeName: "Albertsons", items: ["Milk", "Meat"] }]
+		stores: [{ storeName: "Trader Joes", items: ["Coffee", "Beer", "Beef Jerky"] }, { storeName: "Sprouts", items: ["Lettuce", "Nuts", "Cilantro"] }, { storeName: "Albertsons", items: ["Eggs", "Meat", "Tejava"] }]
 	};
 
-	var Board = React.createClass({
-		displayName: 'Board',
+	var Board = function (_React$Component) {
+		_inherits(Board, _React$Component);
 
+		function Board() {
+			_classCallCheck(this, Board);
 
-		render: function render() {
-			var stores = [];
-			for (var i = 0; i < 3; i++) {
-				stores.push(React.createElement(Store, { storeName: storesObj.stores[i].storeName, items: storesObj.stores[i].items }));
-				//console.log(storesObj.stores[0].items);
+			return _possibleConstructorReturn(this, Object.getPrototypeOf(Board).apply(this, arguments));
+		}
+
+		_createClass(Board, [{
+			key: 'render',
+			value: function render() {
+				var stores = [];
+				for (var i = 0; i < 3; i++) {
+					stores.push(React.createElement(Store, { key: i, storeName: storesObj.stores[i].storeName, items: storesObj.stores[i].items }));
+					//console.log(storesObj.stores[0].items);
+				}
+				return React.createElement(
+					'div',
+					{ className: 'board' },
+					stores
+				);
 			}
-			return React.createElement(
-				'div',
-				{ className: 'board' },
-				stores
-			);
+		}]);
+
+		return Board;
+	}(React.Component);
+
+	var Store = function (_React$Component2) {
+		_inherits(Store, _React$Component2);
+
+		function Store(props, context) {
+			_classCallCheck(this, Store);
+
+			var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(Store).call(this, props, context));
+
+			_this2.state = {
+				clicked: false,
+				btnText: "Click This"
+			};
+			return _this2;
 		}
-	});
 
-	var Store = function Store(props) {
-		console.log(props.items);
+		_createClass(Store, [{
+			key: 'onButtonClick',
+			value: function onButtonClick() {
+				this.setState({ clicked: !this.state.clicked });
+				console.log(this.state.clicked);
+			}
+		}, {
+			key: 'onInputChange',
+			value: function onInputChange() {
+				//this.setState({btnText: this.props.btnText});
+				console.log("hello");
+				console.log(this.state.btnText);
+			}
+		}, {
+			key: 'render',
+			value: function render() {
 
-		var items = [];
-		for (var i = 0; i < props.items.length; i++) {
+				var itemList = [];
 
-			items.push(React.createElement(Item, { itemName: props.items[i] }));
-		}
+				for (var x = 0; x < this.props.items.length; x++) {
+					itemList.push(React.createElement(Item, { key: x, itemName: this.props.items[x] }));
+				}
 
-		return React.createElement(
-			'div',
-			null,
-			React.createElement(
-				'div',
-				{ className: 'store' },
-				props.storeName,
-				items
-			)
-		);
-	};
+				return React.createElement(
+					'div',
+					null,
+					React.createElement(
+						'div',
+						{ className: 'store' },
+						this.props.storeName,
+						itemList,
+						React.createElement(ItemInput, { onClick: this.onButtonClick.bind(this), onChange: this.onInputChange.bind(this), btnText: this.state.btnText })
+					)
+				);
+			}
+		}]);
 
-	var Item = React.createClass({
-		displayName: 'Item',
+		return Store;
+	}(React.Component);
 
-		getInitialState: function getInitialState() {
-			return {
+	var Item = function (_React$Component3) {
+		_inherits(Item, _React$Component3);
+
+		function Item(props, context) {
+			_classCallCheck(this, Item);
+
+			var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(Item).call(this, props, context));
+
+			_this3.state = {
 				highlight: false
 			};
-		},
-		onClick: function onClick() {
-			this.setState({
-				highlight: !this.state.highlight
-			});
-		},
-		render: function render() {
-			var classes = 'panel panel-primary item ' + (this.state.highlight ? 'highlight' : '');
-			return React.createElement(
-				'div',
-				{ className: classes, onClick: this.onClick },
-				React.createElement(
-					'span',
-					{ className: 'itemName' },
-					this.props.itemName
-				),
-				React.createElement(
-					'span',
-					{ className: 'coupon' },
-					'Coupon'
-				)
-			);
+			return _this3;
 		}
 
-	});
+		_createClass(Item, [{
+			key: 'onClick',
+			value: function onClick() {
+				this.setState({ highlight: !this.state.highlight });
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				var classes = 'panel panel-primary item ' + (this.state.highlight ? 'highlight' : '');
+				return React.createElement(
+					'div',
+					{ className: classes, onClick: this.onClick.bind(this) },
+					React.createElement(
+						'span',
+						{ className: 'itemName' },
+						this.props.itemName
+					),
+					React.createElement(
+						'span',
+						{ className: 'coupon' },
+						'Coupon'
+					)
+				);
+			}
+		}]);
+
+		return Item;
+	}(React.Component);
+
+	var ItemInput = function (_React$Component4) {
+		_inherits(ItemInput, _React$Component4);
+
+		function ItemInput() {
+			_classCallCheck(this, ItemInput);
+
+			return _possibleConstructorReturn(this, Object.getPrototypeOf(ItemInput).apply(this, arguments));
+		}
+
+		_createClass(ItemInput, [{
+			key: 'render',
+			value: function render() {
+				return React.createElement(
+					'div',
+					{ className: 'input-area' },
+					React.createElement('input', { onChange: this.props.onChange, type: 'text' }),
+					React.createElement(
+						'button',
+						{ onClick: this.props.onClick, className: 'btn btn-large btn-primary my-button' },
+						this.props.btnText
+					)
+				);
+			}
+		}]);
+
+		return ItemInput;
+	}(React.Component);
 
 	ReactDOM.render(React.createElement(Board, null), document.getElementById('app'));
 
