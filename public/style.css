@@ -44,3 +44,11 @@
 .highlight {
 	background-color: #999999;
 }
+
+.input-area {
+	margin-top: 25px;
+}
+
+.my-button {
+	margin: 0 10px;
+}
